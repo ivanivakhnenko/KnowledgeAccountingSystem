@@ -1,0 +1,156 @@
+body {
+    min-height: 100%;
+    min-width: 1300px;
+    max-width: 1920px;
+    margin: 0 auto;
+    box-sizing: border-box;
+    background-color: #f0f2f4;
+    position: relative;
+}
+
+/* Set padding to keep content from hitting the edges */
+.body-content {
+    padding-left: 15px;
+    padding-right: 15px;
+    position: relative;
+    margin-top: 30px;
+}
+
+h3, .h3 {
+    font-size: 20px;
+    margin-top: 10px;
+}
+
+img {
+    height: 15px;
+}
+
+/* Override the default bootstrap behavior where horizontal description lists 
+   will truncate terms that are too long to fit in the left column 
+*/
+.dl-horizontal dt {
+    white-space: normal;
+}
+
+/* Set width on the form input elements since they're 100% wide by default */
+input,
+select,
+textarea {
+    max-width: 280px;
+}
+
+.skill-title, .skill-value {
+    font-size: 16px;
+    margin: 2px;
+}
+
+.skill-title {
+    display: inline-block;
+    width: 210px;
+}
+
+.skill-value {
+    display: inline-block;
+    width: 45px;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    outline: none;
+}
+
+input, textarea, keygen, select, button {
+    text-rendering: auto;
+    color: initial;
+    letter-spacing: normal;
+    word-spacing: normal;
+    text-transform: none;
+    text-indent: 0px;
+    text-shadow: none;
+    display: inline-block;
+    text-align: left;
+    margin: 0em 0em 0em 0em;
+    font: 13.3333px Arial;
+    margin-bottom: 10px;
+}
+
+button {
+    display: inline-block;
+    padding: 6px 12px;
+    font-size: 15px;
+    font-weight: normal;
+    text-align: center;
+    vertical-align: middle;
+    cursor: pointer;
+    border: 1px solid #999;
+    background-color: #999;
+    color: #fff;
+    border-radius: 0;
+    box-shadow: none;
+    height: 34px;
+    margin-left : 10px;
+}
+
+button[disabled=disabled], button:disabled {
+    background-color: #555;
+    border: 1px solid #e95f55;
+}
+
+.button-green {
+    background: #a3c644;
+    border-color: #a3c644;
+}
+
+.button-red {
+    background: #e96f61;
+    border-color: #e96f61;
+}
+
+.button-small {
+    font-size: 10px;
+    height: 20px;
+}
+
+.skills {
+    background: #fff;
+    margin-bottom: 10px;
+}
+
+.jumbotron{
+    background: #fff;           
+}
+select {
+    margin : 10px;
+    margin-right: 0;
+}
+
+.category-name {
+    border-bottom: 1px solid #dee0e2;
+    padding: 10px;
+    padding-left: 10px;
+    position: relative;
+}
+
+.category-values {
+    padding: 10px;
+    position: relative;
+}
+
+.user-name {
+    position: relative;
+    margin-left:20px;
+}
+
+.text-all {
+    display: inline-block;
+}
+
+.no-close .ui-dialog-titlebar-close {
+  display: none;
+}
+/*/
+.ui-dialog {
+    background: white;
+    border-color: black;
+}*/

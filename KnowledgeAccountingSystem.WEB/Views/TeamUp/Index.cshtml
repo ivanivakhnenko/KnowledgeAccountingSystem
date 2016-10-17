@@ -1,0 +1,91 @@
+@model KnowledgeAccountingSystem.WEB.Models.ViewModels.FilterViewModel
+
+@section scripts{
+    <script>
+        var app = angular.module("KAS", []).value('mvcModel', @Html.Raw(Json.Encode(Model)));
+    </script>
+    @Scripts.Render("~/Scripts/KAS/TeamUp.js")
+}
+
+<div class="body-content" ng-app="KAS">
+    <div ng-controller="TeamUp">
+        <form class="skills" name="SkillsForm">
+            <span class="skill-title" ng-if="model.Categories.length==0">
+                No skills currently available. Please
+                <a href="/Home/Contact">contact</a> the admininstrator
+            </span>
+            <label class="text-all">
+                Include users already assigned to the team
+                <input type="checkbox" ng-model="model.IncludeTeamed">
+            </label>
+            <div ng-repeat="category in model.Categories">
+                <input type="hidden" ng-value="category.Id"/>
+                <div>
+                    <div class="category-name">
+                        <h4 ng-bind="category.Name"></h4>
+                    </div>
+                    <div class="category-values">
+                        <div ng-repeat="skill in category.Skills">
+                            <input type="hidden" ng-value="skill.Skill.Id"/>
+                            <span class="skill-title" ng-bind="skill.Skill.Name"></span>
+
+                            <input type="number" min="0" max="5" class="skill-value" id="answerText"
+                                   name="skillEdit_{{$parent.$index}}_{{$index}}" ng-model="skill.Value"/>
+                            <span ng-show="SkillsForm['skillEdit_' + $parent.$index + '_' + $index].$invalid"
+                                  class="skill-title">Value must be in range 0 - 5</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <button type="submit" class="button-green" ng-disabled="SkillsForm.$invalid || model.length==0"
+                     ng-click="save(answer, answerForm)">Search</button>
+            <button type="button" class="button-red" ng-click="cancel(answer, answerForm)">Reset</button>
+        </form>
+
+        <div ng-repeat="user in users">
+            <div class="skills">
+                <h3 class="category-name" ng-bind="user.Name"></h3>
+
+                <div ng-repeat="category in user.Skills">
+                    <input type="hidden" ng-value="category.Id"/>
+                    <div class="category-name" margin="0">
+                        <h5 ng-bind="category.Name"></h5>
+                    </div>
+                    <div class="category-values">
+                        <div ng-repeat="skill in category.Skills">
+                            <span class="skill-title" ng-bind="skill.Skill.Name"></span>
+                            <span class="skill-value" ng-bind="skill.Value"></span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="category-values">
+                    <span class="skill-title">Teams:</span>
+                    <div ng-repeat="team in user.Teams">
+                        <span class="skill-title" ng-bind="team.Name"></span>
+                        <button type="button" class="button-small button-red"
+                                ng-click="removeTeam(user.Id, team.Id)">Remove Team</button>
+                    </div>
+                </div>
+                <br/>
+                <div ng-if="teams.length!=0">
+                    <span class="skill-title">Select new team:</span>
+                    <br/>
+                    <select name="newTeam" ng-model="selectedTeam[user.Id]" ng-options="x.Name for x in teams"></select>
+                    <button type="button" class="button-green" ng-if="selectedTeam[user.Id]!=undefined"
+                            ng-click="AssignUser(user.Id, selectedTeam[user.Id].Id)">
+                        Assign
+                    </button>
+                </div>
+                <div ng-if="teams.length==0">
+                    <span class="skill-title">Please add new team <a href="Teams">here</a> to assign users somewhere</span>
+                </div>
+            </div>
+        </div>
+
+        <div id="dialog-error" class="ui-dialog" title="Error">
+            <p></p>
+        </div>
+    </div>
+</div>

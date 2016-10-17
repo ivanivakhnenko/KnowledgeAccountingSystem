@@ -1,0 +1,45 @@
+@model System.Collections.Generic.List<KnowledgeAccountingSystem.WEB.Models.ViewModels.UserIdViewModel>
+
+@section scripts{
+    <script>
+
+        var app = angular.module("KAS", []).value('mvcModel', @Html.Raw(Json.Encode(Model)));
+    </script>
+    @Scripts.Render("~/Scripts/KAS/EditRoles.js")
+}
+
+<div class="body-content" ng-app="KAS">
+
+    <h3>Edit users</h3>
+
+    <div class="category-name" ng-controller="EditRoles">
+
+        <div class="skills">
+            
+            <div ng-repeat="user in model | orderBy:'Role.Name'">
+
+                <span class="skill-title" ng-bind="user.Name"></span>
+                <span class="text-all" ng-if="!editMode[$index]" ng-bind="user.Role.Name"></span>
+                
+                <select name="newTeam" ng-model="newRole[$index]" ng-options="x.Name for x in roles"
+                        ng-if="editMode[$index]"></select>
+
+                <button type="button" class="button-green" ng-if="editMode[$index]"
+                        ng-click="AssignUser(user, newRole[$index])" ng-disabled="newRole[$index]==undefined">
+                    Save
+                </button>
+
+                <button type="button" ng-if="user.Role.Name!='admin' && !editMode[$index]"
+                        ng-click="EnterEditMode($index)">
+                    Edit
+                </button>
+
+            </div>
+        </div>
+
+        <button type="button" ng-click="EnterEditMode()" ng-if="!editMode" ng-disabled="model.length==0">Edit</button>
+        <button type="button" class="button-red" ng-click="Cancel()" ng-if="editMode">Cancel</button>
+    </div>
+
+
+</div>

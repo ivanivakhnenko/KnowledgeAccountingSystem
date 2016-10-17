@@ -1,0 +1,62 @@
+@model KnowledgeAccountingSystem.WEB.Models.ViewModels.CategorizedUserViewModel
+
+@section scripts{
+
+    <script>
+        var app = angular.module('KAS', []).value('mvcModel', @Html.Raw(Json.Encode(Model)));
+    </script>
+    @Scripts.Render("~/Scripts/KAS/EditUser.js")
+
+}
+
+<div class="body-content" ng-app="KAS">
+    <div ng-controller="EditUser">
+        <form name="SkillsForm" ng-submit="save(SkillsForm.$valid)" novalidate>
+            <input type="hidden" ng-value="model.Id"/>
+            <h2 class="user-name" ng-bind="model.Name"></h2>
+            <div class="skills">
+                <span class="skill-title" ng-if="model.Skills.length==0">
+                    No skills currently available. Please
+                    <a href="/Home/Contact">contact</a> the admininstrator
+                </span>
+
+                <div ng-repeat="category in model.Skills">
+                    <input type="hidden" ng-value="category.Id"/>
+                    <div>
+                        <div class="category-name">
+                            <div>
+                                <h3 ng-bind="category.Name"></h3>
+                            </div>
+                        </div>
+                        <div class="category-values">
+                            <div ng-repeat="skill in category.Skills | orderBy:'Id'">
+                                <div>
+                                    <input type="hidden" ng-value="skill.Skill.Id"/>
+
+                                    <span class="skill-title" ng-bind="skill.Skill.Name"></span>
+
+                                    <input class="skill-value skill-edit " name="skillEdit_{{$parent.$parent.$index}}_{{$index}}"
+                                           ng-model="skill.Value" ng-if="editMode" type="number" min="0" max="5" required/>
+
+                                    <span ng-show="SkillsForm['skillEdit_' + $parent.$index + '_' + $index].$invalid"
+                                          class="skill-title">Value must be in range 0 - 5</span>
+
+                                    <div class="skill-value" ng-bind="skill.Value" ng-if="!editMode"></div>
+
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <button type="submit" ng-if="editMode" ng-disabled="SkillsForm.$invalid" class="button-green">Save</button>
+            <button type="button" class="button-red" ng-click="cancel(answer, answerForm)" ng-if="editMode">Cancel</button>
+
+            <button type="button" ng-click="edit(true)" ng-if="!editMode">Edit</button>
+        </form>
+
+    </div>
+
+</div>

@@ -1,0 +1,71 @@
+@model System.Collections.Generic.List<KnowledgeAccountingSystem.WEB.Models.ViewModels.TeamViewModel>
+
+@section scripts
+{
+    <script>
+        var app = angular.module("KAS", []).value('mvcModel', @Html.Raw(Json.Encode(Model)));
+    </script>
+    @Scripts.Render("~/Scripts/KAS/TeamsView.js")
+}
+
+
+<div class="body-content" ng-app="KAS">
+
+        <h3>Edit available teams</h3>
+
+    <div class="category-name" ng-controller="TeamsView">
+
+        <div id="teams" class="skills">
+
+            <span class="skill-title" ng-if="model.length==0">Please add some teams, it's lonely here</span>
+
+            <div ng-repeat="team in model">
+
+                <p class="skill-title" ng-bind="team.Name" ng-if="!editMode[$index]"></p>
+                <input id="answerText" ng-model="team.Name" ng-if="editMode[$index]"/>
+
+                <button type="button" ng-click="getUsers(team, $index)" ng-if="!editMode[$index] && !shownUsers[$index]"
+                        class="button-small">Show users</button>
+
+                <button type="button" ng-click="hideUsers($index)" ng-if="!editMode && shownUsers[$index]"
+                        class="button-small">
+                    Hide users
+                </button>
+
+                <!--Edit btn-->
+                <img src="/Content/Icons/edit.svg" alt="Edit"
+                     ng-click="triggerEditMode($index)"
+                     ng-if="!editMode[$index]"/>
+
+                <!--Save btn-->
+                <img src="/Content/Icons/correct.svg" alt="Save"
+                     ng-click="renameTeam($index)"
+                     ng-if="editMode[$index]"/>
+
+                <!--Remove btn-->
+                <img src="/Content/Icons/remove.svg" alt="Remove"
+                     ng-click="remove($index)"
+                     ng-if="editMode[$index]"/>
+
+
+                <span class="skill-title" ng-if="noUsersError[$index]">This team contains no users</span>
+
+                <div ng-repeat="user in users[$index]" ng-if="shownUsers[$parent.$index]">
+                    <span class="skill-title" ng-bind="user.Name"></span>
+                    <span class="skill-title" ng-bind="user.Email"></span>
+                </div>
+
+            </div>
+        </div>
+
+        <button type="button" ng-click="addTeam(answer, answerform)">Add team</button>
+        <button type="button" class="button-red" ng-click="reload()" ng-if="editMode">Cancel</button>
+
+        <div id="dialog-error" class="ui-dialog" title="Error">
+            <p></p>
+        </div> 
+
+    </div>
+
+
+    </div>

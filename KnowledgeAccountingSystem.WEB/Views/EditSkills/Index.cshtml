@@ -1,0 +1,76 @@
+@model System.Collections.Generic.List<KnowledgeAccountingSystem.WEB.Models.ViewModels.CategoryViewModel>
+
+
+@section scripts{
+    <script>
+        var app = angular.module("KAS", []).value('mvcModel', @Html.Raw(Json.Encode(Model)));
+    </script>
+@Scripts.Render("~/Scripts/KAS/EditSkills.js")
+}
+
+    <div class="body-content" ng-app="KAS">
+        <h3>Edit available skills</h3>
+        <div ng-controller="EditSkills">
+            <div class="skills">
+                <span class="skill-title" ng-if="model.length==0">Please add some skills, it's lonely here</span>
+
+                <div ng-repeat="category in model">
+                    <br/>
+                    <input type="hidden" ng-value="category.Id"/>
+                    <div class="category-name">
+                        <h4 class="skill-title" ng-bind="category.Name" ng-if="!editCategory[$index]"></h4>
+
+                        <input ng-if="editCategory[$index]" ng-model="category.Name"/>
+
+                        <!--Edit btn-->
+                        <img src="/Content/Icons/edit.svg" alt="Edit"
+                             ng-click="triggerEditMode($index)"
+                             ng-if="!editCategory[$index]"/>
+
+                        <!--Save btn-->
+                        <img src="/Content/Icons/correct.svg" alt="Save"
+                             ng-click="renameCategory($index)"
+                             ng-if="editCategory[$index]"/>
+
+                        <!--Remove btn-->
+                        <img src="/Content/Icons/remove.svg" alt="Remove"
+                             ng-click="removeCategory($index)"
+                             ng-if="editCategory[$index]"/>
+
+                        <!--Add btn-->
+                        <img src="/Content/Icons/add.svg" alt="Add"
+                             ng-click="addSkill($index)"
+                             ng-if="!editCategory[$index]" />
+                    </div>
+                    <div class="category-values">
+                        <div ng-repeat="skill in category.Skills">
+
+                            <span class="skill-title" ng-if="!editSkill[$parent.$index][$index]" ng-bind="skill.Name"></span> <!--Name editbox-->
+                            <input ng-if="editSkill[$parent.$index][$index]" ng-model="skill.Name"/> <!--Name input-->
+                            
+                            <!--Edit btn-->
+                            <img src="/Content/Icons/edit.svg" alt="Edit"
+                                 ng-click="triggerEditMode($parent.$parent.$index, $parent.$index)"
+                                 ng-if="!editSkill[$parent.$index][$index]"/>
+
+                            <!--Remove btn-->
+                            <img src="/Content/Icons/remove.svg" alt="Remove"
+                                 ng-click="removeSkill($parent.$parent.$index, $index)"
+                                 ng-if="editSkill[$parent.$index][$index]" />
+
+                            <!--Save btn-->
+                            <img src="/Content/Icons/correct.svg" alt="Save"
+                                 ng-click="renameSkill($parent.$parent.$index, $index)"
+                                 ng-if="editSkill[$parent.$index][$index]" />
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <button type="button" ng-click="addCategory()">Add New Category</button>
+            <button type="button" class="button-red" ng-click="cancel()">Cancel</button>
+
+            <div id="dialog-error" class="ui-dialog" title="Error">
+                <p></p>
+            </div> 
+        </div>
+    </div>
